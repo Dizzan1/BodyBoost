@@ -1,3 +1,5 @@
+<img width="1280" height="640" alt="BodyBoost-Logo" src="https://github.com/user-attachments/assets/b7c0cc1b-2aaf-4a87-b6c1-ccd5fa0f950a" />
+
 # BodyBoost
 
 BodyBoost is a Flask web application that helps users build personalized workout routines based on their fitness goal, experience level, weekly schedule, and body metrics. It combines a local exercise database with routine-generation logic, progress tracking, exercise search, and a user dashboard.

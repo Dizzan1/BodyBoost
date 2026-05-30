@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Daily routine
+{% endblock %}
+
+{% block main %}
+    <div class="container-md text-center py-5">
+        <div class="row">
+            <div class="col">
+                <h1>DAILY ROUTINE</h1>
+
+                {% if exercises %}
+                    <h5>Exercise day: {{ exercise_day.replace("_", " ") }}</h5>
+                    <h5>Type of routine: {{ type_routine.replace("_", " ") }}</h5>
+                    <h5>Goal: {{ goal.replace("_", " ") }}</h5>
+                    <h5>Level: {{ exercise_level }}</h5>
+                    <p>{{ recommendation }}</p>
+
+                    {% for exercise in exercises %}
+
+                        <div class="row result_container style_container">
+                            <div class="col-12 col-md-5 img-container">
+                                <img class="img-fluid rounded" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/{{ exercise['images'][0] }}" alt="{{ exercise['name'] }}">
+                            </div>
+                            <div class="col-12 col-md-7">
+                                <div class="info-container">
+
+                                    <h4>{{ exercise["name"] }}</h4>
+                                    <div>Category: {{ exercise["category"] }} </div>
+                                    <div>
+                                        Primary muscles:
+
+                                        {%- for primary_muscle in exercise["primaryMuscles"] %}
+                                            <span>{{ primary_muscle }}</span>{% if not loop.last %}, {% endif %}
+                                        {%- endfor %}
+                                    </div>
+                                    <p>{{ exercise["instructions"][0] }}</p>
+
+                                    <form action="/exercise" method="get">
+                                        <input type="hidden" name="id" value="{{ exercise['id'] }}">
+                                        <button type="submit" class="btn btn-seemore w-75">See more...</button>
+                                    </form>
+
+                                    <form class="history">
+                                        <input type="hidden" name="exercise_id" value="{{ exercise['id'] }}">
+                                        <div class="history_container">
+                                            {% if exercise["history"] %}
+                                                <input type="hidden" name="action" value="remove">
+                                                <button type="submit" class="btn btn-danger w-75">Remove exercise</button>
+                                            {% else %}
+                                                <input type="hidden" name="action" value="add">
+                                                <button type="submit" class="btn btn-success w-75">Exercise done</button>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+                    <h5>REST DAY</h5>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

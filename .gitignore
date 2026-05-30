@@ -1,0 +1,10 @@
+__pycache__/
+.bodyboost-env/
+.venv/
+venv/
+*.pyc
+.pytest_cache/
+.vscode/
+db/*.db
+.env
+flask_session/

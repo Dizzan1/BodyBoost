@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
+        <!-- Bootstrap CSS and ICONS-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+        <!-- https://animate.style/ -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+        <!-- Google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+        <!-- My CSS-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body>
+
+        {% if get_flashed_messages() %}
+            <header>
+                <div class="alert alert-primary mb-0 text-center" role="alert" id="flash-message">
+                    {{ get_flashed_messages() | join(" ") }}
+                </div>
+            </header>
+        {% endif %}
+
+        <div class="main-content">
+            <div class="side-bar">
+                <i class="bi bi-x-circle toggler close_icon"></i>
+                {% if session["user_id"] %}
+                    <div class="main-links" style="border-bottom: 5px solid #E43F5A;">
+                        <a href="/" class="navbar-brand">Body<span style="color:#E43F5A;">Boost</span></a>
+                        <a href="/" class="nav-link"><i class="bi bi-reception-4"></i> Dashboard</a>
+                        <a href="/daily_routine" class="nav-link"><i class="bi bi-list-task"></i> Daily routine</a>
+                        <a href="/search-exercise" class="nav-link"><i class="bi bi-search"></i> Exercises</a>
+                        <a href="/history" class="nav-link"><i class="bi bi-clock-history"></i> History</a>
+                    </div>
+                    <div class="secondary-links">
+                        <a href="/settings" class="nav-link"><i class="bi bi-gear-fill"></i> Settings</a>
+                        <a href="/help" class="nav-link"><i class="bi bi-info-circle-fill"></i> Help</a>
+                        <a href="/logout" class="nav-link"><i class="bi bi-box-arrow-in-left"></i> Logout</a>
+                    </div>
+                {% else %}
+                    <div class="main-links">
+                        <a href="/" class="navbar-brand">Body<span style="color:#E43F5A;">Boost</span></a>
+                        <a href="/login" class="nav-link"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                        <a href="/register" class="nav-link"><i class="bi bi-card-checklist"></i> Register</a>
+                    </div>
+                {% endif %}
+            </div>
+            <i class="bi bi-list toggler open_icon hide"></i>
+            {% block main %}
+            {% endblock %}
+
+            {% block footer %}
+            {% endblock %}
+        </div>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+        <script>
+            // Activate tooltips
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+            // Sidebar
+            const sidebar = document.querySelector(".side-bar");
+            const menu_buttons = document.querySelectorAll(".toggler");
+            const mainContent = document.querySelector(".main-content");
+            const open_icon = document.querySelector(".open_icon")
+
+            // This snippet of code with help of cs50.ai
+            for (let menu_button of menu_buttons) {
+                menu_button.addEventListener('click', function() {
+                    if (sidebar.classList.contains("hide")) {
+                        open_icon.classList.add("hide")
+                        sidebar.classList.remove("hide");
+                        mainContent.classList.remove("expand");
+                    } else {
+                        open_icon.classList.remove("hide")
+                        sidebar.classList.add("hide");
+                        mainContent.classList.add("expand");
+                    }
+                });
+            }
+
+            setTimeout(function() {
+                document.getElementById('flash-message').style.display = 'none';
+            }, 5000); // 5000 milliseconds = 5 seconds
+        </script>
+    </body>
+
+</html>

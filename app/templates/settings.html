@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-md text-center py-5">
+
+        <h1>SETTINGS</h1>
+        <nav>
+            <div class="nav nav-pills" id="nav-tab">
+                <button class="btn active setting-btn" data-bs-toggle="tab" data-bs-target="#nav_body" type="button">Body info</button>
+                <button class="btn setting-btn" data-bs-toggle="tab" data-bs-target="#nav_change_pass" type="button">Change password</button>
+            </div>
+        </nav>
+
+        <div class="tab-content style_container" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav_body">
+                <form action="/settings" method="post" class="row my-container">
+
+                    <input type="hidden" name="form_id" value="form1">
+                    <div class="col-12 col-md-6">
+
+                        <div>
+                            <select id="gender" name="gender" class="form-select" required autofocus>
+                                <option value="" disabled selected>Select your gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="age" class="form-label">Age:</label>
+                            <input id="age" value="{{ user_row['age'] }}" name="age" type="number" min="13" max="100" placeholder="Current age {{ user_row['age'] }}" class="form-control" required>
+                        </div>
+
+
+                        <div>
+                            <label for="height" class="form-label">Height (cm):</label>
+                            <input id="height" value="{{ user_row['height'] }}" name="height" type="number" min="100" max="250" placeholder="Current height {{ user_row['height'] }} (cm)" class="form-control" required>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-md-6">
+
+                        <div>
+                            <select id="activity_level" name="activity_level" class="form-select" required>
+                                <option value="" disabled selected>Select an activity level</option>
+                                <option value="sedentary">sedentary</option>
+                                <option value="light">light</option>
+                                <option value="moderate">moderate</option>
+                                <option value="active">active</option>
+                                <option value="athlete">athlete</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="weight" class="form-label">Weight (cm):</label>
+                            <input id="weight" value="{{ user_row['weight'] }}" name="weight" type="number" min="30" max="200" placeholder="Current weight {{ user_row['weight'] }} (kg)" class="form-control" required>
+                        </div>
+
+                        <div>
+                            <label for="onerm" class="form-label">1RM (kg):</label>
+                            <input id="onerm" value="{{ user_row['onerm'] }}" name="onerm" type="number" min="20" max="500" placeholder="Current 1RM {{ user_row['onerm'] }}kg" class="form-control" required>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn my-button">Change body info</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="nav_change_pass">
+                <form action="/settings" method="post" class="row justify-content-center my-container">
+                    <input type="hidden" name="form_id" value="form2">
+
+                    <div class="col-12 col-md-6">
+
+                        <div>
+                            <input name="old_password" type="password" class="form-control" placeholder="Old password" required>
+                        </div>
+                        <div>
+                            <input name="new_password" type="password" class="form-control" placeholder="New password" required>
+                        </div>
+                        <div>
+                            <input name="confirmation" type="password" class="form-control" placeholder="New password (again)" required>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn my-button">Change password</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

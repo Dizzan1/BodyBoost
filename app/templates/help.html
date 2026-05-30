@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Help
+{% endblock %}
+
+{% block main %}
+    <div class="container-md text-center py-5">
+        <div class="row">
+
+            <h1>HELP!</h1>
+            <div class="col-4">
+                <div id="list-example" class="list-group sticky-top">
+                    <a class="list-group-item list-group-item-action" href="#list-item-1">What is BMI?</a>
+                    <a class="list-group-item list-group-item-action" href="#list-item-2">What is BMR?</a>
+                    <a class="list-group-item list-group-item-action" href="#list-item-3">What is TDEE?</a>
+                    <a class="list-group-item list-group-item-action" href="#list-item-4">How can I level up?</a>
+                    <a class="list-group-item list-group-item-action" href="#list-item-5">My level dropped, what happened?</a>
+                    <a class="list-group-item list-group-item-action" href="#list-item-6">What is 1RM?</a>
+                </div>
+            </div>
+
+            <div class="col-8 style_container help" style="text-align: justify;">
+                <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
+                    <div>
+                        <h4 id="list-item-1" class="text-center">What is BMI?</h4>
+                        <p><strong>BMI (Body Mass Index)</strong> is a measure that uses your height and weight to estimate if your body weight is healthy. It is calculated by dividing your weight in kilograms by the square of your height in meters (kg/m²). A BMI of 18.5-24.9 is considered normal. Below 18.5 is underweight, 25-29.9 is overweight, and 30 or above is obese.</p>
+                        <p>While BMI is a useful screening tool, it doesn’t consider muscle mass, so it may not be accurate for everyone. It’s best used alongside other health assessments.</p>
+                        <p><code>BMI = weight (kg) / [height (m)]<sup>2</sup></code></p>
+                    </div>
+
+                    <div>
+                        <h4 id="list-item-2" class="text-center">What is BMR?</h4>
+                        <p><strong>BMR (Basal Metabolic Rate)</strong> is the number of calories your body needs to maintain basic physiological functions, such as breathing, circulation, and cell production, while at rest. BMR varies based on age, gender, weight, and muscle mass, typically ranging from 1,200 to 2,000 calories per day.</p>
+                        <p>Understanding your BMR can help tailor your diet and exercise regimen. Consuming fewer calories than your BMR can lead to weight loss, but it’s important to stay above a safe threshold to avoid nutrient deficiencies.</p>
+                        <p><code>BMR (Men) = 10 * weight (kg) + 6.25 * height (cm) - 5 * age (years) + 5</code></p>
+                        <p><code>BMR (Women) = 10 * weight (kg) + 6.25 * height (cm) - 5 * age (years) - 161</code></p>
+                    </div>
+
+                    <div>
+                        <h4 id="list-item-3" class="text-center">What is TDEE?</h4>
+                        <p><strong>TDEE (Total Daily Energy Expenditure)</strong> is the total number of calories you burn in a day, including all activities like exercise, work, and rest. It is calculated by multiplying your BMR by an activity factor. TDEE can range widely, typically from 1,800 to 3,000+ calories per day, depending on activity levels.</p>
+                        <p>To maintain weight, consume calories equal to your TDEE. To lose weight, aim for a calorie intake slightly below your TDEE, creating a sustainable deficit.</p>
+                        <p><code>TDEE = BMR * Activity Level</code></p>
+                        <p>Common activity levels:</p>
+                        <ul>
+                            <li><code>1.2</code> for Sedentary (little or no exercise)</li>
+                            <li><code>1.375</code> for Lightly active (light exercise/sports 1-3 days/week)</li>
+                            <li><code>1.55</code> for Moderately active (moderate exercise/sports 3-5 days/week)</li>
+                            <li><code>1.725</code> for Very active (hard exercise/sports 6-7 days a week)</li>
+                            <li><code>1.9</code> for Extra active (very hard exercise/sports & a physical job)</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 id="list-item-4" class="text-center">How can I level up?</h4>
+                        <p>To level up, you need to complete the minimum number of exercises each week for several weeks. You can see this number on the dashboard where it says <strong>"Week Goal."</strong> The Week Goal is calculated by counting the total number of exercises in your weekly routine. You can complete it by doing the exercises in your daily routine or by finding and doing other types of exercises using the search function.</p>
+                        <p><strong>But remember!</strong> Always mark the exercises you've completed!</p>
+                        <p>To advance from beginner to intermediate level, you need to have completed 8 weeks. To advance from intermediate to expert level, the same number of weeks is required.</p>
+                    </div>
+
+                    <div>
+                        <h4 id="list-item-5" class="text-center">My level dropped, what happened?</h4>
+                        <p>Your <em>'Total Week Progress'</em> tracks the number of consecutive weeks you've completed your goals. This can only increase once per week. For this variable to decrease, either you didn't complete your weekly goal, or you may have gone several weeks without logging in.</p>
+                    </div>
+
+                    <div>
+                        <h4 id="list-item-6" class="text-center">What is 1RM?</h4>
+                        <p><strong>1RM</strong> stands for <em>One-Rep Max</em>, which is the maximum amount of weight you can lift for a single repetition of a given exercise. It’s an important measure for understanding your strength levels and planning your workout routines.</p>
+                        <h5>How to Calculate Your 1RM</h5>
+                        <p>You can calculate your 1RM using the following steps:</p>
+                        <ol>
+                            <li>Select a weight that you can lift for 3-5 repetitions with good form.</li>
+                            <li>Perform as many repetitions as possible until you reach muscle failure.</li>
+                            <li>Use the following formula to estimate your 1RM:</li>
+                            <li><code>1RM = Weight Lifted × (1 + 0.0333 × Number of Reps)</code></li>
+                            <li>Alternatively, you can use an online 1RM calculator for convenience.</li>
+                        </ol>
+                        <p>Remember, it’s important to warm up properly before attempting a 1RM and to use a spotter for safety if you’re lifting heavy weights.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

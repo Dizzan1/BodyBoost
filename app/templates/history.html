@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+    <div class="container-md text-center py-5">
+        <div class="row">
+            <h1>HISTORY</h1>
+            <h5>Week number: {{ week }}</h5>
+
+            {% if history_exercises %}
+
+                {% for day in history_exercises | reverse %}
+                    <h5>{{ day }}</h5>
+
+                    {% for exercise in history_exercises[day] %}
+                        <div class="daily_routine_container"> <!--this class is used to removed innerHTML-->
+                            <div class="row result_container style_container">
+
+                                <div class="col-12 col-md-3 img-history">
+                                    <img class="img-fluid rounded" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/{{ exercise['images'][0] }}" alt="{{ exercise['name'] }}">
+                                </div>
+
+                                <div class="col-12 col-md-9">
+                                    <div class="info-container">
+
+                                        <h4>{{ exercise["name"] }}</h4>
+
+                                        <div>
+                                            Primary muscles:
+                                            {%- for primary_muscle in exercise["primaryMuscles"] %}
+                                                <span>{{ primary_muscle }}</span>{% if not loop.last %}, {% endif %}
+                                            {%- endfor %}
+                                        </div>
+
+                                        <form action="/exercise" method="get">
+                                            <input type="hidden" name="id" value="{{ exercise['id'] }}">
+                                            <button type="submit" class="btn btn-seemore w-75">See more...</button>
+                                        </form>
+
+
+                                        <form class="history">
+                                            <input type="hidden" name="exercise_id" value="{{ exercise['id'] }}">
+
+                                            <div class="history_container">
+                                                <input type="hidden" name="action" value="remove">
+                                                <button type="submit" class="btn btn-danger w-75">Remove exercise</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% endfor %}
+
+            {% else %}
+                <h5>New week! no history registered.</h5>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script>
+    // Send data via AJAX
+        async function update_history(url, data) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+
+        // Handle the response
+            if (result["success"]) {
+                return true;
+            } else {
+                alert("Error: " + result["error"]);
+                return false;
+            }
+
+        }
+
+        const forms_history = document.querySelectorAll('.history')
+
+    // This snippet of code with help of cs50.ai
+        for (let form of forms_history) {
+
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+            // Collect form data
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData.entries());
+
+            // Call the async function
+                result = await update_history("/update_history", data)
+
+                if (result) {
+                // Remove exercise
+                    let parentDiv = form.closest('.daily_routine_container');
+
+                    parentDiv.innerHTML = "";
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-lg py-5">
+        <h1>HELLO, {{ user_row["username"] }}</h1>
+        <div class="row" style="min-height: 80svh;">
+
+            <div class="col-12 col-lg-8 statistics_container">
+
+                <div class="chart-container style_container" style="position: relative;">
+                    <canvas id="chart"></canvas>
+                </div>
+
+                <div class="progress_container style_container">
+                    <div style="flex-basis: 100%;">
+
+                        <div class="d-flex justify-content-between">
+                            <span>Week progress: {{ progress_row["week_progress"] }}</span>
+                            <span>Week goal: {{ progress_row["week_goal"] }}</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 2rem;">
+                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: {{ progress_row['pct_week_progress'] }}%">{{ progress_row['pct_week_progress'] }}%</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <span>Your level: {{ user_row["exercise_level"] }}</span>
+                            <span>Next level: {{ progress_row["next_level"] }}</span>
+                        </div>
+                        <div class="progress" style="height: 2rem;">
+                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: {{ progress_row['pct_total_week_progress'] }}%">{{ progress_row['pct_total_week_progress'] }}%</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-12 col-lg-4 body_container">
+
+                <div class="parameters_container style_container">
+                    <div>Gender: {{ user_row["gender"] }}</div>
+                    <div>Age: {{ user_row["age"] }}</div>
+                    <div>Weight: {{ user_row["weight"] }}kg</div>
+                    <div>Height: {{ user_row["height"] }}cm</div>
+                    <div>Activity level: {{ user_row["activity_level"] }}</div>
+
+                    {% if user_row["bmi"] < 18.5 %}
+                        <div class="text-info" data-bs-toggle="tooltip" data-bs-title="Body Mass Index">BMI: {{ user_row["bmi"] }} underweight</div>
+                    {% elif 18.5 <= user_row["bmi"] < 24.9 %}
+                        <div class="text-success" data-bs-toggle="tooltip" data-bs-title="Body Mass Index">BMI: {{ user_row["bmi"] }} normal</div>
+                    {% elif 25 <= user_row["bmi"] < 29.9 %}
+                        <div class="text-warning" data-bs-toggle="tooltip" data-bs-title="Body Mass Index">BMI: {{ user_row["bmi"] }} overweight</div>
+                    {% else %}
+                        <div class="text-danger" data-bs-toggle="tooltip" data-bs-title="Body Mass Index">BMI: {{ user_row["bmi"] }} obese</div>
+                    {% endif %}
+
+                    <div data-bs-toggle="tooltip" data-bs-title="Basal Metabolic Rate">BMR: {{ user_row["bmr"] }}(kcal/day)</div>
+                    <div data-bs-toggle="tooltip" data-bs-title="Total Daily Energy Expenditure">TDEE: {{ user_row["tdee"] }}(kcal/day)</div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+<!-- https://www.chartjs.org/docs/latest/ -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    // Background image body stats
+        let gender = {{ user_row['gender'] | tojson }}
+
+        parameters_container = document.querySelector(".parameters_container")
+
+        if (gender == "male") {
+
+            parameters_container.style.backgroundImage = "url('static/images/male.png')";
+
+        } else {
+
+            parameters_container.style.backgroundImage = "url('static/images/female.png')";
+        }
+
+    // Chart
+        var growth = {{ growth | tojson }}
+        let monday = growth["monday"]["count"]
+        let tuesday = growth["tuesday"]["count"]
+        let wednesday = growth["wednesday"]["count"]
+        let thursday = growth["thursday"]["count"]
+        let friday = growth["friday"]["count"]
+        let saturday = growth["saturday"]["count"]
+        let sunday = growth["sunday"]["count"]
+
+        Chart.defaults.color = '#EFEFEF';
+
+        const ctx = document.getElementById('chart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                datasets: [{
+                    label: 'Number of exercises',
+                    data: [monday, tuesday, wednesday, thursday, friday, saturday, sunday],
+                    borderWidth: 1,
+                    backgroundColor: '#E43F5A',
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            }
+        });
+    </script>
+
+{% endblock %}

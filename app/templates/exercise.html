@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Exercise
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-md py-3">
+        <div class="row">
+            <div class="col style_container">
+                <div class="row text-center">
+
+                    {% for image in exercise["images"] %}
+                        <div class="col-12 col-md-6">
+                            <img class="img-fluid rounded shadow-lg animate__animated animate__fadeIn animate__faster" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/{{image}}" alt="{{ exercise['name'] }}">
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <article>
+                    <h1 class="text-center my-4">{{ exercise["name"] }}</h1>
+                    <section class="details_container">
+
+                        <div class="details_info style_container">
+                            <h2>Details</h2>
+                            <ul>
+                                <li>
+                                    <div>Category:</div>
+                                    <div>{{ exercise["category"] }}</div>
+                                </li>
+                                <li>
+                                    <div>Level:</div>
+                                    <div>{{ exercise["level"] }}</div>
+                                </li>
+                                <li>
+                                    <div>Mechanic:</div>
+                                    <div>{{ exercise["mechanic"] }}</div>
+                                </li>
+                                <li>
+                                    <div>Force:</div>
+                                    <div>{{ exercise["force"] }}</div>
+                                </li>
+                                <li>
+                                    <div>Equipment:</div>
+                                    <div>{{ exercise["equipment"] }}</div>
+                                </li>
+                                <li>
+                                    <div>Primary Muscles:</div>
+                                    <div>
+                                        {%- for primary_muscle in exercise["primaryMuscles"] %}
+                                            <span>{{ primary_muscle }}</span>{% if not loop.last %}, {% endif %}
+                                        {%- endfor %}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>Secondary Muscles:</div>
+                                    <div>
+                                        {% for secondary_muscle in exercise["secondaryMuscles"] %}
+                                            <span>{{ secondary_muscle }}</span>{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="details_instructions style_container">
+                            <h2>Instructions</h2>
+                            <p>
+                                {% for instruction in exercise["instructions"] %}
+                                    {{ instruction }}
+                                {% endfor %}
+                            </p>
+                        </div>
+
+                    </section>
+
+                    <form class="history text-center mt-4">
+                        <input type="hidden" name="exercise_id" value="{{ exercise['id'] }}">
+                        <div class="history_container">
+                            {% if exercise["history"] %}
+                                <input type="hidden" name="action" value="remove">
+                                <button type="submit" class="btn btn-danger w-75">Remove exercise</button>
+                            {% else %}
+                                <input type="hidden" name="action" value="add">
+                                <button type="submit" class="btn btn-lg btn-success w-75">Exercise done</button>
+                            {% endif %}
+                        </div>
+                    </form>
+
+                </article>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

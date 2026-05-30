@@ -1,0 +1,206 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-md text-center py-5">
+        <form class="row my-container style_container" action="/register" method="post">
+
+            <h1>REGISTRATION</h1>
+            <div class="col-12 col-md-6">
+
+                <div>
+                    <input name="username" type="text" placeholder="User" autocomplete="off" autofocus class="form-control" required>
+                </div>
+                <div>
+                    <input name="password" type="password" placeholder="Password" class="form-control" autocomplete="off" required>
+                </div>
+                <div>
+                    <input name="confirmation" type="password" placeholder="Confirm password" class="form-control" autocomplete="off" required>
+                </div>
+                <div>
+                    <select id="gender" name="gender" class="form-select" required>
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="col-12 col-md-6">
+
+                <div>
+                    <input name="age" type="number" min="13" max="100" placeholder="Age" class="form-control" autocomplete="off" required>
+                </div>
+                <div>
+                    <input name="weight" type="number" min="30" max="200" placeholder="Weight (kg)" class="form-control" autocomplete="off" required>
+                </div>
+                <div>
+                    <input name="height" type="number" min="100" max="250" placeholder="Height (cm)" class="form-control" autocomplete="off" required>
+                </div>
+                <div>
+                    <select id="activity_level" name="activity_level" class="form-select" required>
+                        <option value="" disabled selected>Select an activity level</option>
+                        <option value="sedentary">sedentary</option>
+                        <option value="light">light</option>
+                        <option value="moderate">moderate</option>
+                        <option value="active">active</option>
+                        <option value="athlete">athlete</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex justify-content-center">
+                    <input name="onerm" type="number" min="20" max="500" placeholder="1RM (kg)" class="form-control w-50" autocomplete="off" required>
+                </div>
+
+                <div>
+                    <input name="goal" value="hypertrophy" type="radio" id="option1" class="radio" required>
+                    <label class="my-button-radio" for="option1">Hypertrophy</label>
+
+                    <input name="goal" value="power" type="radio" id="option2" class="radio">
+                    <label class="my-button-radio" for="option2">Power</label>
+
+                    <input name="goal" value="endurance" type="radio" id="option3" class="radio">
+                    <label class="my-button-radio" for="option3">Endurance</label>
+                </div>
+
+                <div class="day_container">
+                    <input name="type_routine" value="full_body" type="radio" id="option4" class="radio" required>
+                    <label class="my-button-radio" for="option4">Full body</label>
+
+                    <input name="type_routine" value="upper_lower" type="radio" id="option5" class="radio">
+                    <label class="my-button-radio" for="option5">Upper lower</label>
+
+                    <input name="type_routine" value="body_part" type="radio" id="option6" class="radio">
+                    <label class="my-button-radio" for="option6">Body part</label>
+
+                <!-- JS different options depending on selected routine -->
+                    <div class="schedule"></div>
+                </div>
+
+            </div>
+
+            <div>
+                <button type="submit" class="btn my-button">Register</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        const schedule = document.querySelector('.schedule')
+        const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        const options = {
+            "full_body": [{
+                "value": "rest",
+                "text": "Rest"
+            },
+                {
+                    "value": "full_body_day",
+                    "text": "Full body"
+                },
+            ],
+            "upper_lower": [{
+                "value": "rest",
+                "text": "Rest"
+            },
+                {
+                    "value": "upper_day",
+                    "text": "Upper"
+                },
+                {
+                    "value": "lower_day",
+                    "text": "Lower"
+                },
+            ],
+            "body_part": [{
+                "value": "rest",
+                "text": "Rest"
+            },
+                {
+                    "value": "chest_day",
+                    "text": "Chest"
+                },
+                {
+                    "value": "back_day",
+                    "text": "Back"
+                },
+                {
+                    "value": "shoulders_day",
+                    "text": "Shoulders"
+                },
+                {
+                    "value": "legs_day",
+                    "text": "Legs"
+                },
+                {
+                    "value": "arms_day",
+                    "text": "Arms"
+                },
+            ]
+        }
+
+        document.querySelectorAll('input[name="type_routine"]').forEach((radio) => {
+            radio.addEventListener('change', function(event) {
+                schedule.innerHTML = "";
+                let routine = event.target.value;
+
+            // Check input
+                if (!(routine in options)) {
+                    console.log("Error: Invalid routine");
+                    return;
+                }
+
+            // Generate each select
+                for (let day of days) {
+                    schedule.innerHTML += `
+                <div>
+                    <label class="p-1">${day}</label>
+                    <select name="${day}" class="form-select w-auto" required>
+                        ${generate_options(routine)}
+                    </select>
+                <div>
+                `;
+                }
+                console.log(schedule.innerHTML); // Check the generated HTML
+            });
+        });
+
+        function generate_options(routine) {
+
+            let newOption = ""
+
+            for (let option of options[routine]) {
+
+                newOption += `<option value="${option["value"]}">${option["text"]}</option>`
+
+            }
+
+            return newOption
+        }
+    </script>
+
+
+{% endblock %}
+
+{% block footer %}
+<footer class="position-relative text-center style_container my-5">
+    <div class="container-xxl">
+        <div class="display-6 fw-medium">Donovan Torres</div>
+        <div class="lead fw-normal">
+            &copy; BodyBoost. All rights reserved
+            <a href="https://github.com/Dizzan1/BodyBoost" class="link-danger">
+                Source code
+            </a>
+            licensed under AGPL-3.0
+        </div>
+    </div>
+</footer>
+{% endblock %}

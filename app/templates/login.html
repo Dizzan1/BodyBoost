@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-md text-center py-5">
+        <div class="row">
+            <div class="col container_login style_container ">
+                <h1 class="mb-3">LOGIN</h1>
+                <form action="/login" method="post">
+                    <div class="mb-3">
+                        <input name="username" type="text" placeholder="User" autocomplete="off" autofocus class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <input name="password" type="password" placeholder="Password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn my-button">Log in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+<footer class="position-relative text-center style_container my-5">
+    <div class="container-xxl">
+        <div class="display-6 fw-medium">Donovan Torres</div>
+        <div class="lead fw-normal">
+            &copy; BodyBoost. All rights reserved
+            <a href="https://github.com/Dizzan1/BodyBoost" class="link-danger">
+                Source code
+            </a>
+            licensed under AGPL-3.0
+        </div>
+    </div>
+</footer>
+{% endblock %}

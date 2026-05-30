@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search exercise
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-md text-center py-5">
+        <div class="row">
+            <div class="col">
+
+                <h1>SEARCH EXERCISE</h1>
+                <div class="search_box">
+
+                    <input type="text" placeholder="Exercise" class="form-control my_search">
+
+                    <div class="dropdown-container">
+                        <select name="filter" id="options1">
+                            <option value="name">&rdsh; Name</option>
+                            <option value="primaryMuscles">Primary muscle</option>
+                        </select>
+
+                        <select name="category" id="options2">
+                            <option value="all">&rdsh; All categories</option>
+                            <option value="powerlifting">powerlifting</option>
+                            <option value="strength">strength</option>
+                            <option value="stretching">stretching</option>
+                            <option value="cardio">cardio</option>
+                            <option value="stretching">stretching</option>
+                            <option value="olympic weightlifting">olympic weightlifting</option>
+                            <option value="strongman">strongman</option>
+                            <option value="plyometrics">plyometrics</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="search_container"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let search = document.querySelector('input');
+        const container = document.querySelector('#search_container');
+
+        search.addEventListener('input', async function() {
+
+            container.innerHTML = "";
+
+            let filter = document.getElementById('options1');
+
+            let category = document.getElementById('options2');
+
+            let response = await fetch("/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    [filter.value]: search.value,
+                    category: category.value
+                })
+            });
+
+
+            let data = await response.json();
+
+        // Create each exercise
+            for (let exercise of data) {
+
+                let search_result = document.createElement("div");
+
+                let instructions = JSON.parse(exercise["instructions"]);
+
+                let primary_muscles = JSON.parse(exercise["primaryMuscles"]);
+
+                let html_primary_muscles = "";
+
+                if (primary_muscles.length > 0) {
+
+                    for (let primary of primary_muscles) {
+
+                        html_primary_muscles += ` ${primary} `;
+
+                    }
+                } else {
+                    html_primary_muscles += "No primary muscles found";
+                }
+
+                let images = JSON.parse(exercise["images"]);
+
+                let html_image = ""
+
+                if (images.length > 0) {
+
+                    html_image = `<img class="rounded" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${images[0]}" alt="${exercise["name"]}">`;
+
+                } else {
+                    html_image += "<div> No image found </div>";
+                }
+
+                search_result.innerHTML = `
+                <div class="row result_container style_container animate__animated animate__fadeIn animate__faster">
+                    <div class="col-12 col-md-5 img-container p-2">
+                        ${html_image}
+                    </div>
+                    <div class="col-12 col-md-7 py-2">
+                        <div class="info-container">
+                            <h4 class="fw-bolder">${exercise["name"]}</h4>
+
+                            <div>Category: ${exercise["category"]} </div>
+
+                            <div>Primary muscles: ${html_primary_muscles} </div>
+
+                            <p>${instructions[0]}</p>
+
+                            <form action="/exercise" method="get">
+                                <input type="hidden" name="id" value="${exercise["id"]}">
+                                <button type="submit" class="btn btn-seemore w-75">See more...</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                container.appendChild(search_result)
+            }
+
+        });
+    </script>
+
+{% endblock %}
